@@ -34,7 +34,8 @@
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "tray_controller",
-            "setupIcon": "./icon.ico"
+            "setupIcon": "./icon.ico",
+            "iconUrl": "https://raw.githubusercontent.com/tristanbettany/TrayController/master/icon.ico"
           }
         }
       ]
