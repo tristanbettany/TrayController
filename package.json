@@ -1,0 +1,43 @@
+{
+  "name": "tray-controller",
+  "description": "Control things from your tray",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tristanbettany/TrayController.git"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "author": "Tristan Bettany",
+  "license": "MIT",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.60",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.60",
+    "electron": "^14.0.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "name": "Tray Controller",
+        "icon": "./icon"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "tray_controller",
+            "setupIcon": "./icon.ico"
+          }
+        }
+      ]
+    }
+  }
+}
