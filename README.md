@@ -2,14 +2,14 @@
 
 ## Building
 
-Make sure you have node and npm installed, clone the repo in the root of the repo, run from powershell:
+Make sure you have node and npm installed, clone the repo and then, in the root of the repo, run from powershell:
 
 ```
 npm install
 npm run make
 ```
 
-Inside the `out` folder you will find the installer exe. Install the application like you would any other
+Inside the `out` folder you will find the installer exe. Install the application like you would any other.
 Shortcuts will be added to your desktop and start menu, and an un-installer in add-remove programs.
 
 ## Cross platform notes
