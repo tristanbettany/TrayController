@@ -2,7 +2,8 @@ const { app, Menu, Tray, shell } = require('electron')
 const { v4: uuidv4 } = require('uuid')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
-const ChildProcess = require('child_process');
+const { powershell } = require ('./powershell.js')
+
 
 if (require('electron-squirrel-startup')) {
     handleSquirrelEvent()
@@ -21,15 +22,7 @@ function boot() {
                 {
                     label: 'Rebuild',
                     click: () => {
-
-                        let spawnArguments = ['pwd'];
-                        let defaultPowerShellArguments = ["-ExecutionPolicy", "Bypass", "-NoExit",];
-                        let powershell = ChildProcess.spawn('powershell.exe', [...defaultPowerShellArguments, ...spawnArguments], {
-                            shell: true,
-                            detached: true,
-                            cwd: 'D:/Work'
-                        });
-
+                        powershell(['pwd'], 'D:/Pillar')
                     }
                 }
             ]
