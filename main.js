@@ -1,4 +1,4 @@
-const { app, Menu, Tray } = require('electron')
+const { app, Menu, Tray, BrowserWindow } = require('electron')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
 const { powershell } = require ('./powershell.js')
@@ -10,6 +10,22 @@ if (require('electron-squirrel-startup')) {
 let tray = null
 
 function boot() {
+
+    const settingsWindow = new BrowserWindow({
+        width: 800,
+        height: 400,
+        show: false,
+        webPreferences: {
+            nativeWindowOpen: true
+        }
+    })
+    settingsWindow.setMenu(null)
+    settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
+
+    settingsWindow.on('close', (e) => {
+        e.preventDefault()
+        settingsWindow.hide()
+    })
 
     tray = new Tray(path.join(__dirname, 'icon.png'))
 
@@ -92,6 +108,13 @@ function boot() {
         },
         {
             type: 'separator',
+        },
+        {
+            label: 'Settings',
+            click: () => {
+                settingsWindow.show()
+                settingsWindow.openDevTools();
+            }
         },
         {
             label: 'Quit',
