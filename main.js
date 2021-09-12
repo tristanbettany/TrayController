@@ -22,7 +22,7 @@ function boot() {
                 {
                     label: 'Rebuild',
                     click: () => {
-                        powershell(['pwd'], 'D:/Pillar')
+                        powershell(['./app.bat rebuild; exit'], 'D:/Pillar')
                     }
                 }
             ]
