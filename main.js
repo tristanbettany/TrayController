@@ -1,4 +1,4 @@
-const { app, Menu, Tray, shell } = require('electron')
+const { app, Menu, Tray } = require('electron')
 const { v4: uuidv4 } = require('uuid')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
