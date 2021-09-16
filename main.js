@@ -1,7 +1,8 @@
-const { app, Menu, Tray, BrowserWindow } = require('electron')
+const { app, Menu, Tray, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
 const { powershell } = require ('./powershell.js')
+const Store = require('electron-store');
 
 if (require('electron-squirrel-startup')) {
     handleSquirrelEvent()
@@ -11,12 +12,25 @@ let tray = null
 
 function boot() {
 
+    const store = new Store();
+    store.set('foo', 'bar');
+
+    ipcMain.on('getStoreValue', (event, key) => {
+        event.returnValue = store.get(key);
+    });
+
+    ipcMain.on('setStoreValue', (event, args) => {
+        store.set(args.key, args.value);
+        event.returnValue = store.get(args.key);
+    });
+
     const settingsWindow = new BrowserWindow({
         width: 800,
         height: 400,
         show: false,
         webPreferences: {
-            nativeWindowOpen: true
+            nativeWindowOpen: true,
+            preload: path.join(__dirname, 'renderer/preload.js')
         }
     })
     settingsWindow.setMenu(null)
@@ -128,4 +142,4 @@ function boot() {
     tray.setContextMenu(contextMenu)
 }
 
-app.on('ready', boot) 
+app.on('ready', boot)
