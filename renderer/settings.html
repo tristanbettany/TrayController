@@ -6,10 +6,17 @@
         <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
         <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
         <title>TrayController Settings</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
     </head>
     <body>
         <h1>Settings</h1>
 
+        <form>
+            <label for="pillar-path">Pillar Path</label>
+            <input type="text" id="pillar-path"/>
+            <button id="apply">Apply</button>
+            <button id="cancel">Cancel</button>
+        </form>
 
         <script src="settings.js"></script>
     </body>

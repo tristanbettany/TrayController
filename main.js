@@ -1,7 +1,7 @@
 const { app, Menu, Tray, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
-const { powershell } = require ('./powershell.js')
+const { powershell, docker } = require ('./launcher.js')
 const Store = require('electron-store');
 
 if (require('electron-squirrel-startup')) {
@@ -12,8 +12,17 @@ let tray = null
 
 function boot() {
 
+    const hiddenWin = new BrowserWindow({
+        width: 100,
+        height: 100,
+        show: false,
+        frame: false,
+        webPreferences: {
+            nativeWindowOpen: true,
+        }
+    })
+
     const store = new Store();
-    store.set('foo', 'bar');
 
     ipcMain.on('getStoreValue', (event, key) => {
         event.returnValue = store.get(key);
@@ -23,23 +32,6 @@ function boot() {
         store.set(args.key, args.value);
         event.returnValue = store.get(args.key);
     });
-
-    const settingsWindow = new BrowserWindow({
-        width: 800,
-        height: 400,
-        show: false,
-        webPreferences: {
-            nativeWindowOpen: true,
-            preload: path.join(__dirname, 'renderer/preload.js')
-        }
-    })
-    settingsWindow.setMenu(null)
-    settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
-
-    settingsWindow.on('close', (e) => {
-        e.preventDefault()
-        settingsWindow.hide()
-    })
 
     tray = new Tray(path.join(__dirname, 'icon.png'))
 
@@ -117,6 +109,15 @@ function boot() {
                     click: () => {
                         powershell(['./pillar.ps1 rebuild; exit'], 'D:/Pillar')
                     }
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Docker',
+                    click: () => {
+                        docker()
+                    }
                 }
             ]
         },
@@ -126,8 +127,22 @@ function boot() {
         {
             label: 'Settings',
             click: () => {
-                settingsWindow.show()
-                settingsWindow.openDevTools();
+                const settingsWindow = new BrowserWindow({
+                    width: 800,
+                    height: 400,
+                    show: true,
+                    frame: false,
+                    webPreferences: {
+                        nativeWindowOpen: true,
+                        preload: path.join(__dirname, 'renderer/preload.js')
+                    }
+                })
+                settingsWindow.setMenu(null)
+                settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
+
+                ipcMain.on('cancel', (event) => {
+                    settingsWindow.destroy()
+                });
             }
         },
         {

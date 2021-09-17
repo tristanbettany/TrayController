@@ -10,5 +10,8 @@ contextBridge.exposeInMainWorld('api', {
             value: value
         }
         return ipcRenderer.sendSync('setStoreValue', args)
+    },
+    cancel: () => {
+        return ipcRenderer.sendSync('cancel')
     }
 })

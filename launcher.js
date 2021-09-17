@@ -1,7 +1,7 @@
+const ChildProcess = require('child_process');
+
 module.exports = {
     powershell: function(spawnArguments = [], cwd = 'C:/') {
-        const ChildProcess = require('child_process');
-
         let defaultPowerShellArguments = [
             '-ExecutionPolicy',
             'Bypass',
@@ -18,6 +18,15 @@ module.exports = {
                 shell: true,
                 detached: true,
                 cwd: cwd
+            }
+        );
+    },
+    docker: function() {
+        let docker = ChildProcess.spawn(
+            'C:/Program Files/Docker/Docker/Docker Desktop.exe',
+            [],
+            {
+                detached: true
             }
         );
     }
