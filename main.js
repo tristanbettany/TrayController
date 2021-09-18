@@ -45,25 +45,25 @@ function boot() {
                         {
                             label: 'php80',
                             click: () => {
-                                powershell(['./pillar.ps1 bash php80; exit'], 'D:/Pillar')
+                                powershell(['./pillar.ps1 bash php80; exit'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'php74',
                             click: () => {
-                                powershell(['./pillar.ps1 bash php74; exit'], 'D:/Pillar')
+                                powershell(['./pillar.ps1 bash php74; exit'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'nginx',
                             click: () => {
-                                powershell(['./pillar.ps1 bash nginx; exit'], 'D:/Pillar')
+                                powershell(['./pillar.ps1 bash nginx; exit'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'node',
                             click: () => {
-                                powershell(['./pillar.ps1 bash node; exit'], 'D:/Pillar')
+                                powershell(['./pillar.ps1 bash node; exit'], store.get('pillar-path'))
                             }
                         }
                     ]
@@ -74,19 +74,19 @@ function boot() {
                 {
                     label: 'Start',
                     click: () => {
-                        powershell(['./pillar.ps1 start; exit'], 'D:/Pillar')
+                        powershell(['./pillar.ps1 start; exit'], store.get('pillar-path'))
                     }
                 },
                 {
                     label: 'Stop',
                     click: () => {
-                        powershell(['./pillar.ps1 stop; exit'], 'D:/Pillar')
+                        powershell(['./pillar.ps1 stop; exit'], store.get('pillar-path'))
                     }
                 },
                 {
                     label: 'Restart',
                     click: () => {
-                        powershell(['./pillar.ps1 restart; exit'], 'D:/Pillar')
+                        powershell(['./pillar.ps1 restart; exit'], store.get('pillar-path'))
                     }
                 },
                 {
@@ -95,19 +95,19 @@ function boot() {
                 {
                     label: 'Build',
                     click: () => {
-                        powershell(['./pillar.ps1 build; exit'], 'D:/Pillar')
+                        powershell(['./pillar.ps1 build; exit'], store.get('pillar-path'))
                     }
                 },
                 {
                     label: 'Remove',
                     click: () => {
-                        powershell(['./pillar.ps1 remove; exit'], 'D:/Pillar')
+                        powershell(['./pillar.ps1 remove; exit'], store.get('pillar-path'))
                     }
                 },
                 {
                     label: 'Rebuild',
                     click: () => {
-                        powershell(['./pillar.ps1 rebuild; exit'], 'D:/Pillar')
+                        powershell(['./pillar.ps1 rebuild; exit'], store.get('pillar-path'))
                     }
                 },
                 {
@@ -140,7 +140,7 @@ function boot() {
                 settingsWindow.setMenu(null)
                 settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
 
-                ipcMain.on('cancel', (event) => {
+                ipcMain.on('close', (event) => {
                     settingsWindow.destroy()
                 });
             }

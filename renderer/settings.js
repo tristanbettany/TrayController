@@ -1,13 +1,28 @@
-//console.log(window.api.getStoreValue('foo'))
-//console.log(window.api.setStoreValue('foo', 'bar'))
+document.addEventListener('DOMContentLoaded', function(event) {
+    let pillarPath = window.api.getStoreValue('pillar-path')
+    if (pillarPath !== undefined) {
+        document.querySelector('#pillar-path').value = pillarPath
+    }
+})
 
-let apply = () => {
-    console.log('applying settings')
+let saveSettings = () => {
+    let pillarPath = document.querySelector('#pillar-path').value
+    window.api.setStoreValue('pillar-path', pillarPath)
 }
 
-let cancel = () => {
-    window.api.cancel()
+let saveAndClose = () => {
+    saveSettings()
+    window.api.close()
 }
 
-document.querySelector('#apply').addEventListener('click', apply);
-document.querySelector('#cancel').addEventListener('click', cancel);
+let save = () => {
+    saveSettings()
+}
+
+let close = () => {
+    window.api.close()
+}
+
+document.querySelector('#ok').addEventListener('click', saveAndClose);
+document.querySelector('#apply').addEventListener('click', save);
+document.querySelector('#cancel').addEventListener('click', close);
