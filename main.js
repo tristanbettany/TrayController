@@ -91,6 +91,30 @@ function boot() {
                     enabled: isProjectEnabled(),
                     submenu: [
                         {
+                            label: 'Bash',
+                            click: () => {
+                                powershell(['./pillar.ps1 project-bash '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
+                            }
+                        },
+                        {
+                            label: 'Composer Install',
+                            click: () => {
+                                powershell(['./pillar.ps1 composer-install '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
+                            }
+                        },
+                        {
+                            label: 'Composer Update',
+                            click: () => {
+                                powershell(['./pillar.ps1 composer-update '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
+                            }
+                        },
+                        {
+                            label: 'Composer Dump Autoload',
+                            click: () => {
+                                powershell(['./pillar.ps1 composer-dump '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
+                            }
+                        },
+                        {
                             label: 'Test',
                             click: () => {
                                 powershell(['./pillar.ps1 test '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
