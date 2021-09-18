@@ -12,6 +12,8 @@ let tray = null
 
 function boot() {
 
+    // Init vars
+
     const hiddenWin = new BrowserWindow({
         width: 100,
         height: 100,
@@ -23,23 +25,22 @@ function boot() {
     })
 
     let settingsWindow = null
-
     const store = new Store();
-
-    ipcMain.on('getStoreValue', (event, key) => {
-        event.returnValue = store.get(key);
-    });
-
-    ipcMain.on('setStoreValue', (event, args) => {
-        store.set(args.key, args.value);
-        event.returnValue = store.get(args.key);
-    });
-
     tray = new Tray(path.join(__dirname, 'icon.png'))
 
-    const contextMenu = Menu.buildFromTemplate([
+    // Helper Methods
+
+    let isPllarEnabled = () => {
+        let pillarPath = store.get('pillar-path')
+        return pillarPath !== undefined && pillarPath !== null;
+    }
+
+    // Build Tray
+
+    let contextMenu = Menu.buildFromTemplate([
         {
             label: 'Pillar',
+            enabled: isPllarEnabled(),
             submenu: [
                 {
                     label: 'Containers',
@@ -129,6 +130,8 @@ function boot() {
         {
             label: 'Settings',
             click: () => {
+                // Anything to do with the settings window
+
                 let createWindow = () => {
                     settingsWindow = new BrowserWindow({
                         width: 1200,
@@ -177,6 +180,32 @@ function boot() {
 
     tray.setToolTip('Tray Controller')
     tray.setContextMenu(contextMenu)
+
+    // Events
+
+    ipcMain.on('getStoreValue', (event, key) => {
+        event.returnValue = store.get(key);
+    });
+
+    ipcMain.on('setStoreValue', (event, args) => {
+        // This is because settings may affect the status of menu items
+        if (
+            args.value !== undefined
+            && args.value !== null
+        ) {
+            if (
+                args.key === 'pillar-path'
+                && args.value !== store.get('pillar-path')
+            ) {
+                contextMenu.items[0].enabled = true
+            }
+        }
+
+        tray.setContextMenu(contextMenu)
+        store.set(args.key, args.value);
+        event.returnValue = store.get(args.key);
+    });
+
 }
 
 app.on('ready', boot)
