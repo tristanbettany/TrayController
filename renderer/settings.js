@@ -3,11 +3,27 @@ document.addEventListener('DOMContentLoaded', function(event) {
     if (pillarPath !== undefined) {
         document.querySelector('#pillar-path').value = pillarPath
     }
+
+    let projectFolder = window.api.getStoreValue('project-folder')
+    if (projectFolder !== undefined) {
+        document.querySelector('#project-folder').value = projectFolder
+    }
+
+    let projectContainer = window.api.getStoreValue('project-container')
+    if (projectContainer !== undefined) {
+        document.querySelector('#project-container').value = projectContainer
+    }
 })
 
 let saveSettings = () => {
     let pillarPath = document.querySelector('#pillar-path').value
     window.api.setStoreValue('pillar-path', pillarPath)
+
+    let projectFolder = document.querySelector('#project-folder').value
+    window.api.setStoreValue('project-folder', projectFolder)
+
+    let projectContainer = document.querySelector('#project-container').value
+    window.api.setStoreValue('project-container', projectContainer)
 }
 
 let saveAndClose = () => {
@@ -15,14 +31,9 @@ let saveAndClose = () => {
     window.api.close()
 }
 
-let save = () => {
-    saveSettings()
-}
-
 let close = () => {
     window.api.close()
 }
 
 document.querySelector('#save-and-close').addEventListener('click', saveAndClose);
-document.querySelector('#save').addEventListener('click', save);
 document.querySelector('#close').addEventListener('click', close);

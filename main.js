@@ -30,9 +30,24 @@ function boot() {
 
     // Helper Methods
 
-    let isPllarEnabled = () => {
+    let isPillarEnabled = () => {
         let pillarPath = store.get('pillar-path')
-        return pillarPath !== undefined && pillarPath !== null;
+
+        return pillarPath !== undefined
+            && pillarPath !== null
+            && pillarPath !== ''
+    }
+
+    let isProjectEnabled = () => {
+        let projectFolder = store.get('project-folder')
+        let projectContainer = store.get('project-container')
+
+        return projectFolder !== undefined
+            && projectFolder !== null
+            && projectFolder !== ''
+            && projectContainer !== undefined
+            && projectContainer !== null
+            && projectContainer !== ''
     }
 
     // Build Tray
@@ -40,7 +55,7 @@ function boot() {
     let contextMenu = Menu.buildFromTemplate([
         {
             label: 'Pillar',
-            enabled: isPllarEnabled(),
+            enabled: isPillarEnabled(),
             submenu: [
                 {
                     label: 'Containers',
@@ -67,6 +82,18 @@ function boot() {
                             label: 'node',
                             click: () => {
                                 powershell(['./pillar.ps1 bash node; exit'], store.get('pillar-path'))
+                            }
+                        }
+                    ]
+                },
+                {
+                    label: 'Current Project',
+                    enabled: isProjectEnabled(),
+                    submenu: [
+                        {
+                            label: 'Test',
+                            click: () => {
+                                powershell(['./pillar.ps1 test '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
                             }
                         }
                     ]
@@ -148,7 +175,7 @@ function boot() {
                     settingsWindow.setMenu(null)
                     settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
                     settingsWindow.show()
-                    //settingsWindow.openDevTools()
+                    settingsWindow.openDevTools()
 
                     settingsWindow.on('will-resize', (e) => {
                         e.preventDefault();
@@ -188,24 +215,16 @@ function boot() {
     });
 
     ipcMain.on('setStoreValue', (event, args) => {
-        // This is because settings may affect the status of menu items
-        if (
-            args.value !== undefined
-            && args.value !== null
-        ) {
-            if (
-                args.key === 'pillar-path'
-                && args.value !== store.get('pillar-path')
-            ) {
-                contextMenu.items[0].enabled = true
-            }
-        }
-
-        tray.setContextMenu(contextMenu)
         store.set(args.key, args.value);
         event.returnValue = store.get(args.key);
     });
 
+    tray.on('mouse-move', (event, position) => {
+        contextMenu.items[0].enabled = isPillarEnabled()
+        contextMenu.items[0].submenu.items[1].enabled = isProjectEnabled()
+
+        tray.setContextMenu(contextMenu)
+    });
 }
 
 app.on('ready', boot)
