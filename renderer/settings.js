@@ -23,6 +23,6 @@ let close = () => {
     window.api.close()
 }
 
-document.querySelector('#ok').addEventListener('click', saveAndClose);
-document.querySelector('#apply').addEventListener('click', save);
-document.querySelector('#cancel').addEventListener('click', close);
+document.querySelector('#save-and-close').addEventListener('click', saveAndClose);
+document.querySelector('#save').addEventListener('click', save);
+document.querySelector('#close').addEventListener('click', close);

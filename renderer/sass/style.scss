@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*::-webkit-scrollbar {
+  @apply bg-gray-lighter;
+  width: 2px;
+  height: 2px;
+  overflow: visible;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #868686;
+}
+
+.active {
+  @apply bg-gray-medium;
+}
+
+.pin-bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.pin-bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.sidebar-size {
+  width: 300px;
+}
+
+.content-size {
+  width: 890px;
+}
+
+.settings-size {
+  height: 550px;
+  overflow-y: auto;
+}
+
+.input-border {
+  @apply border border-gray-light;
+  border-bottom-color: #8B8B8B;
+}

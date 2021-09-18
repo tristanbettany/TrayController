@@ -22,6 +22,8 @@ function boot() {
         }
     })
 
+    let settingsWindow = null
+
     const store = new Store();
 
     ipcMain.on('getStoreValue', (event, key) => {
@@ -127,22 +129,42 @@ function boot() {
         {
             label: 'Settings',
             click: () => {
-                const settingsWindow = new BrowserWindow({
-                    width: 800,
-                    height: 400,
-                    show: true,
-                    frame: false,
-                    webPreferences: {
-                        nativeWindowOpen: true,
-                        preload: path.join(__dirname, 'renderer/preload.js')
-                    }
-                })
-                settingsWindow.setMenu(null)
-                settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
+                let createWindow = () => {
+                    settingsWindow = new BrowserWindow({
+                        width: 1200,
+                        height: 700,
+                        show: false,
+                        fullscreenable: false,
+                        maximizable: false,
+                        minimizable: false,
+                        webPreferences: {
+                            nativeWindowOpen: true,
+                            preload: path.join(__dirname, 'renderer/preload.js')
+                        }
+                    })
+                    settingsWindow.setMenu(null)
+                    settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
+                    settingsWindow.show()
+                    //settingsWindow.openDevTools()
 
-                ipcMain.on('close', (event) => {
-                    settingsWindow.destroy()
-                });
+                    settingsWindow.on('will-resize', (e) => {
+                        e.preventDefault();
+                    });
+
+                    ipcMain.on('close', (event) => {
+                        settingsWindow.destroy()
+                    });
+                }
+
+                if (settingsWindow === null) {
+                    createWindow()
+                } else {
+                    if (settingsWindow.isDestroyed() === true) {
+                        createWindow()
+                    } else {
+                        settingsWindow.focus()
+                    }
+                }
             }
         },
         {

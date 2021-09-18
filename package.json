@@ -10,7 +10,9 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "build": "node ./node_modules/gulp/bin/gulp.js sass",
+    "watch": "node ./node_modules/gulp/bin/gulp.js"
   },
   "author": "Tristan Bettany",
   "license": "MIT",
@@ -22,7 +24,17 @@
     "@electron-forge/cli": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
     "electron": "^14.0.0",
-    "trim-newlines": ">=3.0.1"
+    "trim-newlines": ">=3.0.1",
+    "gulp": "^4.0.*",
+    "gulp-autoprefixer": "^7.0.*",
+    "gulp-clean-css": "^4.3.*",
+    "gulp-plumber": "^1.2.*",
+    "gulp-postcss": "^9.0.*",
+    "gulp-rename": "^2.0.*",
+    "gulp-sass": "^4.1.*",
+    "tailwindcss": "^2.0.*",
+    "postcss": "^8.2.*",
+    "autoprefixer": "^10.2.*"
   },
   "config": {
     "forge": {
