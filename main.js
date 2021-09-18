@@ -175,7 +175,7 @@ function boot() {
                     settingsWindow.setMenu(null)
                     settingsWindow.loadFile(path.join(__dirname, 'renderer/settings.html'))
                     settingsWindow.show()
-                    settingsWindow.openDevTools()
+                    //settingsWindow.openDevTools()
 
                     settingsWindow.on('will-resize', (e) => {
                         e.preventDefault();
