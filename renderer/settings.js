@@ -39,9 +39,14 @@ let saveAndClose = () => {
     window.api.close()
 }
 
+let save = () => {
+    saveSettings()
+}
+
 let close = () => {
     window.api.close()
 }
 
 document.querySelector('#save-and-close').addEventListener('click', saveAndClose);
+document.querySelector('#save').addEventListener('click', save);
 document.querySelector('#close').addEventListener('click', close);
