@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
     if (projectContainer !== undefined) {
         document.querySelector('#project-container').value = projectContainer
     }
+
+    let projectUrl = window.api.getStoreValue('project-url')
+    if (projectUrl !== undefined) {
+        document.querySelector('#project-url').value = projectUrl
+    }
 })
 
 let saveSettings = () => {
@@ -24,6 +29,9 @@ let saveSettings = () => {
 
     let projectContainer = document.querySelector('#project-container').value
     window.api.setStoreValue('project-container', projectContainer)
+
+    let projectUrl = document.querySelector('#project-url').value
+    window.api.setStoreValue('project-url', projectUrl)
 }
 
 let saveAndClose = () => {

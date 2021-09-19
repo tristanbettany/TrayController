@@ -50,6 +50,14 @@ function boot() {
             && projectContainer !== ''
     }
 
+    let isNgroknabled = () => {
+        let projectUrl = store.get('project-url')
+
+        return projectUrl !== undefined
+            && projectUrl !== null
+            && projectUrl !== ''
+    }
+
     // Build Tray
 
     let contextMenu = Menu.buildFromTemplate([
@@ -121,6 +129,16 @@ function boot() {
                             }
                         }
                     ]
+                },
+                {
+                    type: 'separator',
+                },
+                {
+                    label: 'Ngrok',
+                    enabled: isNgroknabled(),
+                    click: () => {
+                        powershell(['./ngrok.exe http --region=eu --host-header='+ store.get('project-url') +' 127.0.0.1:80; exit'], store.get('pillar-path'))
+                    }
                 },
                 {
                     type: 'separator',
@@ -246,6 +264,7 @@ function boot() {
     tray.on('mouse-move', (event, position) => {
         contextMenu.items[0].enabled = isPillarEnabled()
         contextMenu.items[0].submenu.items[1].enabled = isProjectEnabled()
+        contextMenu.items[0].submenu.items[3].enabled = isNgroknabled()
 
         tray.setContextMenu(contextMenu)
     });
