@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
     if (projectUrl !== undefined) {
         document.querySelector('#project-url').value = projectUrl
     }
+
+    let projectsPath = window.api.getStoreValue('projects-path')
+    if (projectsPath !== undefined) {
+        document.querySelector('#projects-path').value = projectsPath
+    }
 })
 
 let saveSettings = () => {
@@ -32,6 +37,9 @@ let saveSettings = () => {
 
     let projectUrl = document.querySelector('#project-url').value
     window.api.setStoreValue('project-url', projectUrl)
+
+    let projectsPath = document.querySelector('#projects-path').value
+    window.api.setStoreValue('projects-path', projectsPath)
 }
 
 let saveAndClose = () => {

@@ -1,7 +1,8 @@
 const ChildProcess = require('child_process');
+const { shell } = require('electron');
 
 module.exports = {
-    powershell: function(spawnArguments = [], cwd = 'C:/') {
+    powershell: (spawnArguments = [], cwd = 'C:/') => {
         let defaultPowerShellArguments = [
             '-ExecutionPolicy',
             'Bypass',
@@ -21,10 +22,24 @@ module.exports = {
             }
         );
     },
-    docker: function() {
+    docker: () => {
         let docker = ChildProcess.spawn(
             'C:/Program Files/Docker/Docker/Docker Desktop.exe',
             [],
+            {
+                detached: true
+            }
+        );
+    },
+    explorer: (path) => {
+        shell.openPath(path)
+    },
+    chrome: (url) => {
+        let chrome = ChildProcess.spawn(
+            'C:/Program Files/Google/Chrome/Application/chrome.exe',
+            [
+                url
+            ],
             {
                 detached: true
             }

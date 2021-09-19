@@ -1,7 +1,7 @@
 const { app, Menu, Tray, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
-const { powershell, docker } = require ('./launcher.js')
+const { powershell, docker, explorer, chrome } = require ('./launcher.js')
 const Store = require('electron-store');
 
 if (require('electron-squirrel-startup')) {
@@ -48,6 +48,14 @@ function boot() {
             && projectContainer !== undefined
             && projectContainer !== null
             && projectContainer !== ''
+    }
+
+    let isProjectsEnabled = () => {
+        let projectsPath = store.get('projects-path')
+
+        return projectsPath !== undefined
+            && projectsPath !== null
+            && projectsPath !== ''
     }
 
     let isNgroknabled = () => {
@@ -194,6 +202,36 @@ function boot() {
             ]
         },
         {
+            label: 'Quick Paths',
+            submenu: [
+                {
+                    label: 'Projects',
+                    enabled: isProjectsEnabled(),
+                    click: () => {
+                        explorer(store.get('projects-path'))
+                    }
+                },
+                {
+                    label: 'Current Project',
+                    enabled: isProjectsEnabled() && isProjectEnabled(),
+                    click: () => {
+                        explorer(path.join(store.get('projects-path'), store.get('project-folder')))
+                    }
+                }
+            ]
+        },
+        {
+            label: 'Quick Links',
+            submenu: [
+                {
+                    'label': 'Gitlab',
+                    click: () => {
+                        chrome('http://www.gitlab.com')
+                    }
+                }
+            ]
+        },
+        {
             type: 'separator',
         },
         {
@@ -265,6 +303,8 @@ function boot() {
         contextMenu.items[0].enabled = isPillarEnabled()
         contextMenu.items[0].submenu.items[1].enabled = isProjectEnabled()
         contextMenu.items[0].submenu.items[3].enabled = isNgroknabled()
+        contextMenu.items[1].submenu.items[0].enabled = isProjectsEnabled()
+        contextMenu.items[1].submenu.items[1].enabled = isProjectsEnabled() && isProjectEnabled()
 
         tray.setContextMenu(contextMenu)
     });
