@@ -89,6 +89,12 @@ function boot() {
                             }
                         },
                         {
+                            label: 'sysops',
+                            click: () => {
+                                powershell(['./pillar.ps1 bash sysops; exit'], store.get('pillar-path'))
+                            }
+                        },
+                        {
                             label: 'nginx',
                             click: () => {
                                 powershell(['./pillar.ps1 bash nginx; exit'], store.get('pillar-path'))
