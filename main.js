@@ -1,7 +1,7 @@
 const { app, Menu, Tray, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { handleSquirrelEvent } = require ('./squirrel.js')
-const { powershell, docker, explorer, chrome } = require ('./launcher.js')
+const { terminal, powershell, docker, explorer, chrome } = require ('./launcher.js')
 const Store = require('electron-store');
 
 if (require('electron-squirrel-startup')) {
@@ -79,31 +79,31 @@ function boot() {
                         {
                             label: 'php80',
                             click: () => {
-                                powershell(['./pillar.ps1 bash php80; exit'], store.get('pillar-path'))
+                                terminal(['./pillar.ps1 terminal php80'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'php74',
                             click: () => {
-                                powershell(['./pillar.ps1 bash php74; exit'], store.get('pillar-path'))
+                                terminal(['./pillar.ps1 terminal php74'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'sysops',
                             click: () => {
-                                powershell(['./pillar.ps1 bash sysops; exit'], store.get('pillar-path'))
+                                terminal(['./pillar.ps1 terminal sysops'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'nginx',
                             click: () => {
-                                powershell(['./pillar.ps1 bash nginx; exit'], store.get('pillar-path'))
+                                terminal(['./pillar.ps1 terminal nginx'], store.get('pillar-path'))
                             }
                         },
                         {
                             label: 'node',
                             click: () => {
-                                powershell(['./pillar.ps1 bash node; exit'], store.get('pillar-path'))
+                                terminal(['./pillar.ps1 terminal node'], store.get('pillar-path'))
                             }
                         }
                     ]
@@ -113,9 +113,9 @@ function boot() {
                     enabled: isProjectEnabled(),
                     submenu: [
                         {
-                            label: 'Bash',
+                            label: 'Terminal',
                             click: () => {
-                                powershell(['./pillar.ps1 project-bash '+ store.get('project-container') +' '+ store.get('project-folder') +'; exit'], store.get('pillar-path'))
+                                terminal(['./pillar.ps1 project-terminal '+ store.get('project-container') +' '+ store.get('project-folder')], store.get('pillar-path'))
                             }
                         },
                         {

@@ -22,6 +22,19 @@ module.exports = {
             }
         );
     },
+    terminal: (spawnArguments = [], cwd = 'C:/') => {
+        let wt = ChildProcess.spawn(
+            'wt.exe new-tab PowerShell',
+            [
+                ...spawnArguments
+            ],
+            {
+                shell: true,
+                detached: true,
+                cwd: cwd
+            }
+        );
+    },
     docker: () => {
         let docker = ChildProcess.spawn(
             'C:/Program Files/Docker/Docker/Docker Desktop.exe',
